@@ -5,6 +5,7 @@ var camelCase = require('lodash.camelcase')
 var assign = require('lodash.assign')
 var mapValues = require('lodash.mapvalues')
 var querySelectorAll = require('query-selector')
+var isElement = require('lodash.isElement')
 
 function styleCamelCase (name) {
   var camel = camelCase(name)
@@ -259,6 +260,8 @@ Element.prototype.toReact = function (index) {
   return React.createElement(this.nodeName, props, this.text || this.children.map(function (el, i) {
     if (el instanceof Element) {
       return el.toReact(i)
+    } else if(isElement(el)) {
+      return new Element(el.tagName || 'div', el).toReact(i)
     } else {
       return el
     }
